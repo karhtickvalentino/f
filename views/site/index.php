@@ -13,6 +13,7 @@ $this->title = 'My Yii Application';
         <div id="search_wrapper">
          <div id="search_form" class="clearfix">
          <h1>Start your job search here</h1>
+         sucess
             <p>
              <input type="text" id="tb1" class="text1" placeholder=" " value="Enter Keyword(s)" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter Keyword(s)';}">
              <input type="text" class="text" placeholder=" " value="Location" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Location';}">
