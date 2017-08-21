@@ -4,8 +4,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=job_portal',
-    'username' => 'root',
-    'password' => '',
+    'dsn' => 'mysql:host=herennnowidentifier.clns7dnu70de.us-west-2.rds.amazonaws.com:3306;dbname=job_portal',
+    'username' => 'herennowdb',
+    'password' => 'herennowpass',
     'charset' => 'utf8',
 ];
