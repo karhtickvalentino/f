@@ -20,17 +20,17 @@ class JobAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/bootstrap-3.1.1.min.css',
-        'css/style.css',
-        'css/tourist.css'
+         'css/style.css',
+        // 'css/tourist.css'
        
     ];
     public $js = [
-        'js/underscore-1.4.4.js',
-        'js/backbone-1.0.0.js',
-        'js/jquery-ui-1.10.2.custom.js',
-        'js/tourist.js',
-        'js/jquery-1.9.1.js',
-        'js/jobtour.js'
+        // 'js/underscore-1.4.4.js',
+        // 'js/backbone-1.0.0.js',
+        // 'js/jquery-ui-1.10.2.custom.js',
+        // 'js/tourist.js',
+        // 'js/jquery-1.9.1.js',
+        // 'js/jobtour.js'
     
     ];
     public $depends = [
