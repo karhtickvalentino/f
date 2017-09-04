@@ -5,8 +5,13 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
+
+    'bootstrap' => ['simplechat'],
    
     'modules' => [
+    'simplechat' => [
+            'class' => 'bubasuma\simplechat\Module',
+        ],
     
         'user-management' => [
         'class' => 'webvimark\modules\UserManagement\UserManagementModule',

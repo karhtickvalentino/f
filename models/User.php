@@ -2,6 +2,9 @@
 
 namespace app\models;
 use yii;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+use yii\web\IdentityInterface;
 
 class User extends \yii\base\Object implements \yii\web\IdentityInterface
 {
@@ -113,4 +116,5 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     public function getAvatarImage(){
     return Yii::getAlias($this->avatar);
 }
+
 }

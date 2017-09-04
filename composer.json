@@ -19,10 +19,9 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "webvimark/module-user-management": "^1.0",
-        "sanex/yii2-simple-filter": "dev-master",
-        "sintret/yii2-chat-adminlte": "dev-master"
-
-
+        "bubasuma/yii2-simplechat": "*",
+        "yiisoft/yii2-twig": "> 2.0.4",
+        "bower-asset/twig.js" : "0.8.4@stable"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
