@@ -1,5 +1,4 @@
-jenkins 2
-line 2
+
 
 Yii 2 Basic Project Template
 ============================
