@@ -8,7 +8,7 @@ use yii\helpers\Html;
 $this->title = 'Update Recruiter: ' . $model->name;
 
 ?>
-<div class="recruiter-update">
+<div class="container">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

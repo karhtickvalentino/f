@@ -8,7 +8,25 @@ use yii\helpers\Html;
 $this->title = 'Update Job: ' . $model->title;
 
 ?>
-<div class="job-update">
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single">
+    <div class="container">
+
+        <div class="sixteen columns">
+            <h2>Edit Job</h2>
+            <nav id="breadcrumbs">
+                <ul>
+                    <li>You are here:</li>
+                    <li><a href="/recruiter/">Home</a></li>
+                    <li>Job Update</li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</div>
+<div class="container">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

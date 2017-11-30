@@ -31,6 +31,7 @@ class Recruiter extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'company_name', 'email_id'], 'required'],
+            ['designation','safe'],
             [['name', 'company_name', 'email_id'], 'string', 'max' => 255],
         ];
     }

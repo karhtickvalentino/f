@@ -33,7 +33,7 @@ class RecruiterController extends Controller
     public function actionIndex()
     {
         $id = Yii::$app->user->id;
-        
+         $this->layout = 'search_candidate.php';
        return $this->render('index', [
             'id' => $id
         ]);
@@ -47,9 +47,18 @@ class RecruiterController extends Controller
      */
     public function actionView($id)
     {
+        $this->layout = 'search_candidate.php';
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+
+
+
+        public function actionMessages()
+    {
+      $this->layout = 'search_candidate.php';
+        return $this->render('messages');
     }
 
     /**
@@ -78,6 +87,7 @@ class RecruiterController extends Controller
      */
     public function actionUpdate($id)
     {
+        $this->layout = 'search_candidate.php';
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

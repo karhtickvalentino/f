@@ -42,7 +42,8 @@ class AuthController extends BaseController
 	 */
 	public function actionLogin()
 	{
-		//print_r(Yii::$app->request->post());exit;
+		// print_r(Yii::$app->request->post());exit;
+		
 		if ( !Yii::$app->user->isGuest )
 		{
 			return $this->goHome();
@@ -57,8 +58,16 @@ class AuthController extends BaseController
 			return ActiveForm::validate($model);
 		}
 
-		if ( $model->load(Yii::$app->request->post()) AND $model->login() )
+		if ( $model->load(Yii::$app->request->post()))
 		{
+			if(isset($_GET['type']))
+			{
+			if($_GET['type']==='emp')
+				$model->type = 1; 
+			}
+			else $model->type = 0;
+			if($model->login())
+			{
 			$ses= new \app\models\MySession;
 			$ses->user_id = yii::$app->user->id;
 			$ses->name = yii::$app->user->username;
@@ -70,6 +79,7 @@ class AuthController extends BaseController
 			if($model->type == 0)
 				return $this->redirect('\candidate\index');
 			return $this->redirect('\recruiter\index');
+		}
 		}
 
 		return $this->renderIsAjax('login', compact('model'));
@@ -95,6 +105,7 @@ class AuthController extends BaseController
 	 */
 	public function actionChangeOwnPassword()
 	{
+		$this->layout = '/candidate.php';
 		if ( Yii::$app->user->isGuest )
 		{
 			return $this->goHome();
@@ -131,6 +142,7 @@ class AuthController extends BaseController
 	 */
 	public function actionRegistration()
 	{
+		$this->layout = 'loginLayout.php';
 		if ( !Yii::$app->user->isGuest )
 		{
 			return $this->goHome();
@@ -156,10 +168,26 @@ class AuthController extends BaseController
 		{
 
 			
-			
+			$rand_no = 200;
+        $username_parts = array_filter(explode(" ", strtolower($model->name))); //explode and lowercase name
+        $username_parts = array_slice($username_parts, 0, 2); //return only first two arry part
+    
+        $part1 = (!empty($username_parts[0]))?substr($username_parts[0], 0,8):""; //cut first name to 8 letters
+        $part2 = (!empty($username_parts[1]))?substr($username_parts[1], 0,5):""; //cut second name to 5 letters
+        $part3 = ($rand_no)?rand(0, $rand_no):"";
+        
+        $model->chatname = $part1. str_shuffle($part2). $part3; //str_shuffle to randomly shuffle all characters 
 			// Trigger event "before registration" and checks if it's valid
 			if ( $this->triggerModuleEvent(UserAuthEvent::BEFORE_REGISTRATION, ['model'=>$model]) )
 			{
+				if(isset($_GET['type']))
+			{
+			if($_GET['type']==='emp')
+				$model->type = 1; 
+			}
+			else $model->type = 0;
+
+		
 				$user = $model->registerUser(false);
 
 				// Trigger event "after registration" and checks if it's valid
@@ -181,7 +209,7 @@ class AuthController extends BaseController
 							}
 
 							Yii::$app->user->login($user);
-							if(Yii::$app->request->post('RegistrationForm')['type'] == 1){
+							if(Yii::$app->user->identity->type == 1){
 							$recModel= new \app\models\Recruiter;
 							//print_r($model);exit;
 							//$recModel->recruiter_id = $model->id;
@@ -201,7 +229,7 @@ class AuthController extends BaseController
 							$recModel->email_id = $model->username;
 							$recModel->mobile_number = $model->mobile_number;
 							$recModel->save(false);
-							User::assignRole($user->id,'candidate');
+							User::assignRole($user->id,'candidates');
 			}
 
 							//return $this->redirect(Yii::$app->user->returnUrl);

@@ -22,6 +22,9 @@ use Yii;
  */
 class Job extends \yii\db\ActiveRecord
 {
+
+
+     //$scenarios = parent::scenarios();
     /**
      * @inheritdoc
      */
@@ -36,10 +39,10 @@ class Job extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['job_id', 'recruiter_id', 'title', 'description', 'experience_minimum', 'experience_maximun', 'salary', 'location', 'industry'], 'required'],
+            [['recruiter_id', 'title', 'description', 'experience_minimum', 'experience_maximun', 'salary', 'location', 'industry','worktype'], 'required'],
             [['job_id', 'recruiter_id', 'experience_minimum', 'experience_maximun', 'salary'], 'integer'],
             [['description'], 'string'],
-            [['created_on'], 'safe'],
+            [['created_on','status'], 'safe'],
             [['title', 'location'], 'string', 'max' => 255],
             [['industry'], 'string', 'max' => 2555],
             [['recruiter_id'], 'exist', 'skipOnError' => true, 'targetClass' => Recruiter::className(), 'targetAttribute' => ['recruiter_id' => 'recruiter_id']],
@@ -72,4 +75,11 @@ class Job extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Recruiter::className(), ['recruiter_id' => 'recruiter_id']);
     }
+
+        public function getMySession()
+    {
+        return $this->hasMany(MySession::className(), ['recruiter_id' => 'user_id']);
+    }
+     // $scenarios['createjob'] = ['Title','Description','Salary']; 
+     //    return $scenarios;
 }

@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="user-registration">
 
-	<h2 class="text-center"><?= $this->title ?></h2>
+	<h2 class="text-center"><?= 'Step 1: '.$this->title ?></h2>
 
 	<?php $form = ActiveForm::begin([
 		'id'=>'user',
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<?php $model->type= '0'; ?>
 						
-				<div id="regtype">	<?= $form->field($model, 'type')->radioList(array('0'=>'candidate',1=>'recruiter')); ?> </div>
+				
 	<?= $form->field($model, 'name')->textInput(['maxlength' => 50, 'autocomplete'=>'off', 'id' =>'regname' ,'autofocus'=>true]) ?>
 	
     <?= $form->field($model, 'username')->textInput(['maxlength' => 50, 'id'=> 'regemail', 'autocomplete'=>'off', 'autofocus'=>true]) ?>
@@ -36,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?= $form->field($model, 'password')->passwordInput(['maxlength' => 255, 'autocomplete'=>'off']) ?>
 
 	<?= $form->field($model, 'repeat_password')->passwordInput(['maxlength' => 255, 'autocomplete'=>'off']) ?>
-
 	
 
 

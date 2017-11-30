@@ -30,17 +30,17 @@ use yii\helpers\Html;
 
 					<?= $form->field($model, 'username')
 						->textInput(['placeholder'=>$model->getAttributeLabel('username'), 'autocomplete'=>'off']) ?>
-
+						
 					<?= $form->field($model, 'password')
 						->passwordInput(['placeholder'=>$model->getAttributeLabel('password'), 'autocomplete'=>'off']) ?>
 
-						<?php $model->type= '0'; ?>
 						
-					<?= $form->field($model, 'type')->radioList(array('0'=>'candidate',1=>'recruiter')); ?>
+						
+					<?php //$form->field($model, 'type')->radioList(array('0'=>'candidate',1=>'recruiter'));
+					 ?>
 
 
-
-
+					
 					<?= (isset(Yii::$app->user->enableAutoLogin) && Yii::$app->user->enableAutoLogin) ? $form->field($model, 'rememberMe')->checkbox(['value'=>true]) : '' ?>
 
 					<?= Html::submitButton(
@@ -49,16 +49,12 @@ use yii\helpers\Html;
 					) ?>
 
 					<div class="row registration-block">
-						<div class="col-sm-6">
-							<?= GhostHtml::a(
-								UserManagementModule::t('front', "Registration"),
-								['/user-management/auth/registration']
-							) ?>
-						</div>
+						 <div class="col-sm-6">
+						</div> 
 						<div class="col-sm-6 text-right">
-							<?= GhostHtml::a(
+							<?= Html::a(
 								UserManagementModule::t('front', "Forgot password ?"),
-								['/user-management/auth/password-recovery']
+								['/site/password']
 							) ?>
 						</div>
 					</div>

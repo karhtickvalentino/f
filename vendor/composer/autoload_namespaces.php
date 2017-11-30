@@ -10,7 +10,11 @@ return array(
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Ikimea\\Browser\\' => array($vendorDir . '/ikimea/browser/lib'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
+    'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
+    'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
+    'Evenement' => array($vendorDir . '/evenement/evenement/src'),
     'Diff' => array($vendorDir . '/phpspec/php-diff/lib'),
     'Codeception\\' => array($vendorDir . '/codeception/specify/src'),
     'Behat\\Gherkin' => array($vendorDir . '/behat/gherkin/src'),
+    'Aws' => array($vendorDir . '/aws/aws-sdk-php/src'),
 );

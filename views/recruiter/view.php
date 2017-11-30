@@ -9,23 +9,26 @@ use yii\widgets\DetailView;
 $this->title = $model->name;
 
 ?>
-<div class="recruiter-view">
+<div class="container">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+   
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->recruiter_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Home', '/recruiter/', ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Update', ['update', 'id' => $model->recruiter_id], ['class' => 'button']) ?>
+        
+        
        
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'recruiter_id',
             'name',
             'company_name',
+            'designation',
             'email_id:email',
+            'mobile_number',
+
         ],
     ]) ?>
 

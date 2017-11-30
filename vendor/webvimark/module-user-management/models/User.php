@@ -11,6 +11,8 @@ use webvimark\modules\UserManagement\models\rbacDB\Route;
 use webvimark\modules\UserManagement\UserManagementModule;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\web\DbSession;
+//use yii\web\dbsession;
 
 /**
  * This is the model class for table "user".
@@ -269,6 +271,9 @@ public $avatar;
 
 			['repeat_password', 'required', 'on'=>['newUser', 'changePassword']],
 			['repeat_password', 'compare', 'compareAttribute'=>'password'],
+			[['name','mobile_number'],'required'],
+			['type','safe'],
+			['chatname', 'unique']
 		];
 	}
 
@@ -419,12 +424,18 @@ public $avatar;
 		return parent::beforeDelete();
 	}
 
-public static function getOnlineUsers()
-    {
-        $sql = "SELECT session.user_id, user.name FROM session LEFT JOIN user ON user.id=session.user_id";
-        $command = Yii::app()->db->createCommand($sql);
+// public static function isOnlineBySession() {
+	
+//         $table = Yii::$app->sessionTable;
+//         print_r($table);exit; 
+//         $db = Yii::$app->session->getDbConnection();
  
-        return $command->queryAll();
-    }
+//         $row = $db->createCommand()->select()->from($table)->where('id_user=:id', array(':id' => $this->id))->queryRow();
+ 
+//         if ($row) {
+//             return true;
+//         }
+//         return false;
+//     }
 
 }

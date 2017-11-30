@@ -18,6 +18,7 @@ class RegistrationForm extends Model
 	public $mobile_number;
 	public $id;
 	public $email;
+	public $chatname;
 
 	/**
 	 * @inheritdoc
@@ -27,9 +28,9 @@ class RegistrationForm extends Model
 		$rules = [
 			//['captcha', 'captcha', 'captchaAction'=>'/user-management/auth/captcha'],
 
-			[['username', 'password', 'repeat_password', 'type','name','mobile_number'], 'required'],
+			[['username', 'password', 'repeat_password','name','mobile_number'], 'required'],
 			[['username', 'password', 'repeat_password'], 'trim'],
-
+			[['type'],'safe'],
 			['username', 'unique',
 				'targetClass'     => 'webvimark\modules\UserManagement\models\User',
 				'targetAttribute' => 'username',
@@ -41,7 +42,8 @@ class RegistrationForm extends Model
 			['password', 'match', 'pattern' => Yii::$app->getModule('user-management')->passwordRegexp],
 
 			['repeat_password', 'compare', 'compareAttribute'=>'password'],
-			['id','integer']
+			['id','integer'],
+			['chatname','unique']
 		];
 
 		if ( Yii::$app->getModule('user-management')->useEmailAsLogin )
@@ -98,14 +100,14 @@ class RegistrationForm extends Model
 		$user->password = $this->password;
 		$user->type = $this->type;
 		$user->name = $this->name;
-		
+		$user->chatname = $this->chatname;
 		$user->mobile_number = $this->mobile_number;
 		if ( Yii::$app->getModule('user-management')->useEmailAsLogin )
 		{
 			$user->email = $this->username;
 			$user->type = $this->type;
 		    $user->name = $this->name;
-		
+			$user->chatname = $this->chatname;
 		    $user->mobile_number = $this->mobile_number;
 			// If email confirmation required then we save user with "inactive" status
 			// and without username (username will be filled with email value after confirmation)

@@ -3,64 +3,113 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\models\Recruiter;
+use app\models\WorkType;
 /* @var $this yii\web\View */
 /* @var $model app\models\Job */
 
-$this->title = $model->title;
+$this->title = 'Profile';
 
 ?>
-<div class="job-view">
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="resume">
+	<div class="container">
+		<div class="ten columns">
+			<div class="resume-titlebar">
+				<img src="/images/resumes-list-avatar-01.png" alt="">
+				<div class="resumes-list-content">
+					<h4><?php echo $model->name; ?> <span><?php echo $model->role; ?></span></h4>
+					<span class="icons"><i class="fa fa-map-marker"></i> <?php echo $model->location; ?></span>
+					<span class="icons"><i class="ln ln-icon-Management"></i> <?php echo $model->experience; ?></span>
+					<span class="icons"><a href="#"><i class="fa fa-link"></i> Website</a></span>
+					<span class="icons"><a href="mailto:john.doe@example.com"><i class="fa fa-envelope"></i> <?php echo $model->email_id; ?></a></span>
+					<div class="skills">
+						<?php $sk1 = explode(",",$model['skills']); 
+                            foreach ($sk1 as $sk2) {
+                        ?>
+                        <span><?php print_r($sk2); ?></span><?php } ?>
+					</div>
+					<div class="clearfix"></div>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+				</div>
+			</div>
+		</div>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            
-            [
-            'label' => 'Recruiter',
-            'format'=>'raw',
-            'value'=>function ($data1) {
-                    
-                  $roleLabel = Recruiter::find()->where(['=', 'recruiter_id', $data1->recruiter_id])->one();
-                        if(!empty($roleLabel)){
-                            return $roleLabel->name;
-                        }
-                        else{
-                            return '-';
-                        }
-                    
-                },
+		<div class="six columns">
+			<div class="two-buttons">
 
-            ],
-                        [
-            'label' => 'Company',
-            'format'=>'raw',
-            'value'=>function ($data1) {
-                    
-                  $roleLabel = Recruiter::find()->where(['=', 'recruiter_id', $data1->recruiter_id])->one();
-                        if(!empty($roleLabel)){
-                            return $roleLabel->company_name;
-                        }
-                        else{
-                            return '-';
-                        }
-                    
-                },
+				<a href="/candidate/download?id=<?php echo $model->candidate_id; ?>" class="button"><i class="fa fa-envelope"></i> Resume</a>
 
-            ],
+				<a href="/candidate/update?id=<?php echo $model->candidate_id?>" class="button dark"><i class="fa fa-pencil"></i> Edit</a>
 
 
-            
-            'title',
-            'description:ntext',
-            'experience_minimum',
-            'experience_maximun',
-            'salary',
-            'location',
-            'industry',
-            'created_on',
-        ],
-    ]) ?>
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="container">
+
+    <!-- Recent Jobs -->
+	<div class="eight columns">
+	<div class="padding-right">
+
+		<h3 class="margin-bottom-15">About Me</h3>
+
+		<p class="margin-reset">
+			<?php echo $model->profile_summary; ?>
+		</p>
+
+		<br>
+
+
+
+	</div>
+	</div>
+<!-- Widgets -->
+	<div class="eight columns">
+
+		<h3 class="margin-bottom-20">Education</h3>
+
+		<!-- Resume Table -->
+		<dl class="resume-table">
+			<dt>
+				
+				<strong><?php echo $model->education ?></strong>
+			</dt>
+			
+		</dl>
+
+		<h3 class="margin-bottom-20">Perefernce</h3>
+
+
+		<!-- Resume Table -->
+		<dl class="resume-table">
+			<dt>
+				
+				<strong>Prefered Location</strong>
+			</dt>
+			<dd>
+				<p><?php echo $model->worklocation ?></p>
+			</dd>
+
+			<dt>
+				
+				<strong>Prefered Work Type</strong>
+			</dt>
+			<dd>
+				<p><?php 
+					$type = WorkType::find()->where(['work_type_id'=>$model->worktype])->one();
+				echo $type->name;	 ?></p>
+			</dd>
+			
+		</dl>
+		
+			
+			
+		
+
+	</div>
+
 
 </div>

@@ -36,7 +36,7 @@ class Message extends ActiveRecord
 {
     public static function tableName()
     {
-        return Migration::TABLE_MESSAGE;
+        return 'message';
     }
 
     /**

@@ -19,9 +19,11 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "webvimark/module-user-management": "^1.0",
-        "bubasuma/yii2-simplechat": "*",
         "yiisoft/yii2-twig": "> 2.0.4",
-        "bower-asset/twig.js" : "0.8.4@stable"
+        "bower-asset/twig.js" : "0.8.4@stable",
+        "bubasuma/yii2-simplechat": "^2.0",
+        "svbackend/yii2-wschat": "^0.1.2",
+        "aws/aws-sdk-php": "2.*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

@@ -37,7 +37,8 @@ class Candidate extends \yii\db\ActiveRecord
             [['name', 'email_id', 'location'], 'string', 'max' => 255],
             [['skills'], 'string', 'max' => 1025],
             [['resume'],'file', 'extensions' => 'doc, docx, rtf, pdf'],
-            [['skills','experience','location'],'required','on'=>'request']
+            [['skills','experience','location','profile_summary','education','worktype','worklocation','location','role'],'required','on'=>'request'],
+            [['languages_spoken'],'safe']
         ];
     }
 

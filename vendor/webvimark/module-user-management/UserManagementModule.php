@@ -83,7 +83,7 @@ class UserManagementModule extends \yii\base\Module
 
 	 * @var bool
 	 */
-	public $enableRegistration = false;
+	public $enableRegistration = true;
 
 	/**
 	 * Roles that will be assigned to user registered via user-management/auth/registration

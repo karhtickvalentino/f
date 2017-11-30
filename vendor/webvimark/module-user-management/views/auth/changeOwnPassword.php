@@ -9,8 +9,8 @@ use yii\helpers\Html;
  * @var webvimark\modules\UserManagement\models\forms\ChangeOwnPasswordForm $model
  */
 
-$this->title = UserManagementModule::t('back', 'Change own password');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = UserManagementModule::t('back', 'Change password');
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="change-own-password">
 

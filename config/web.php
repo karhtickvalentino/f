@@ -3,15 +3,32 @@
 $params = require(__DIR__ . '/params.php');
 
 $config = [
+// 'session' => [
+//     'class' => 'yii\web\DbSession',
+//     'writeCallback' => function ($session) {
+//         return [
+//            'user_id' => Yii::$app->user->id,
+//            'last_write' => time(),
+//         ];
+//     },
+// ],
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
 
-    'bootstrap' => ['simplechat'],
+   // 'bootstrap' => ['simplechat'],
    
     'modules' => [
-    'simplechat' => [
-            'class' => 'bubasuma\simplechat\Module',
-        ],
+    //  'chat' => [
+    //         'class' => 'slavkovrn\chat\ChatModule',
+    //         'numberLastMessages' => 30,
+    //     ],
+    // 'simplechat' => [
+    //         'class' => 'bubasuma\simplechat\Module',
+    //     ],
+    // 'message' => [
+    //     'class' => 'thyseus\message\Module',
+    //     'userModelClass' => '\app\models\User', // your User model. Needs to be ActiveRecord.
+    // ],
     
         'user-management' => [
         'class' => 'webvimark\modules\UserManagement\UserManagementModule',
@@ -47,7 +64,7 @@ $config = [
                   'DbHttpSession' => [
                   'class' => 'components\DbHttpSession',
                   'connectionID' => 'db',
-                  'sessionTableName' => 'session',
+                  //'sessionTableName' => 'session',
                   'userTableName' => 'user'
                 ],
 

@@ -9,6 +9,9 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Job;
+use webvimark\modules\UserManagement\models\User;
+use webvimark\modules\UserManagement\models\forms\PasswordRecoveryForm;
+use yii\widgets\ActiveForm;
 
 class SiteController extends Controller
 {
@@ -53,6 +56,17 @@ class SiteController extends Controller
             ],
         ];
     }
+    public function beforeAction($action)
+{
+    if (parent::beforeAction($action)) {
+        // change layout for error action
+        if ($action->id=='error')
+             $this->layout ='main2.php';
+        return true;
+    } else {
+        return false;
+    }
+}
 
     /**
      * Displays homepage.
@@ -61,8 +75,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if(Yii::$app->user->isGuest) 
+            return $this->render('index');
+        elseif (yii::$app->user->identity->type==0) {
+            $this->layout = 'candidate';
+            return $this->render('/candidate/index');
+        }
+        else{
+             $this->layout = 'search_candidate';
+             return $this->render('/recruiter/index');
+        }
     }
+
 
 
    public function actionAdduser()
@@ -72,12 +96,32 @@ class SiteController extends Controller
 
 
 
+       public function actionPassword()
+    {
+        $this->layout = 'main2.php';
+        $model = new user();
+        if ($model->load(Yii::$app->request->post())) {
+             $query = user::find()->where(['username'=>$model->email])->one();
+             if($query)
+                 $password = $query->password_hash;
+                //$new = Yii::$app->getSecurity()->validatePassword($password);
+                //print_r($password);
+            //return $this->redirect(['view', 'id' => $model->candidate_id]);
+        } else {
+            return $this->render('password',['model'=>$model]);
+        }
+        
+        
+    }
+
+
+
 
 
      public function actionLocation()
     {
-        $model = new Job();
-        return $this->render('location',['model' => $model]);
+        
+        return $this->render('location');
     }
 
 

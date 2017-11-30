@@ -6,16 +6,14 @@ $db = require(__DIR__ . '/db.php');
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['simplechat'],//['log'],
+    'bootstrap' => ['log'],//['simplechat'],
     'controllerNamespace' => 'app\commands',
     'modules'=>[
     'user-management' => [
         'class' => 'webvimark\modules\UserManagement\UserManagementModule',
             'controllerNamespace'=>'vendor\webvimark\modules\UserManagement\controllers', // To prevent yii help from crashing
     ],
-    'simplechat' => [
-            'class' => 'bubasuma\simplechat\Module',
-        ],
+    
 ],
     'components' => [
         'cache' => [
@@ -25,7 +23,7 @@ $config = [
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    //'levels' => ['error', 'warning'],
                 ],
             ],
         ],

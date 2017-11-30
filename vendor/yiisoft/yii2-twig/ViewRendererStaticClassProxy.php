@@ -28,12 +28,30 @@ class ViewRendererStaticClassProxy
 
     /**
      * @param string $property
+     * @return bool
+     */
+    public function __isset($property)
+    {
+        $class = new \ReflectionClass($this->_staticClassName);
+        $staticProps = $class->getStaticProperties();
+        $constants = $class->getConstants();
+
+        return array_key_exists($property, $staticProps) || array_key_exists($property, $constants);
+    }
+    
+    /**
+     * @param string $property
      * @return mixed
      */
     public function __get($property)
     {
         $class = new \ReflectionClass($this->_staticClassName);
-
+        
+        $constants = $class->getConstants();
+        if (array_key_exists($property, $constants)) {
+            return $class->getConstant($property);
+        }
+        
         return $class->getStaticPropertyValue($property);
     }
 

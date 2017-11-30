@@ -2,13 +2,21 @@
 
 namespace app\controllers;
 
-use Yii;
+
 use app\models\Job;
 use app\models\jobsearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use app\models\Test;
+use yii\web\Response;
+use Yii;
+use webvimark\modules\UserManagement\models\User;
+use webvimark\modules\UserManagement\controllers\AuthController;
+use webvimark\modules\UserManagement\models\forms\RegistrationForm;
+use app\models\Candidate;
+use webvimark\modules\UserManagement\components\UserAuthEvent;
 
 /**
  * JobController implements the CRUD actions for Job model.
@@ -20,14 +28,20 @@ class JobController extends Controller
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
+        // return [
+        //     'verbs' => [
+        //         'class' => VerbFilter::className(),
+        //         'actions' => [
+        //             'delete' => ['POST'],
+        //             //'createjob' => ['POST'],
+        //         ],
+        //     ],
+        // ];
+     return [
+        'ghost-access'=> [
+            'class' => 'webvimark\modules\UserManagement\components\GhostAccessControl',
+        ],
+    ];
     }
 
     /**
@@ -36,6 +50,7 @@ class JobController extends Controller
      */
     public function actionIndex($rid)
     {
+        $this->layout = 'search_candidate';
         $searchModel = new jobsearch();
        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -68,6 +83,7 @@ class JobController extends Controller
      */
     public function actionView($id)
     {
+        $this->layout = 'search_candidate.php';
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -80,11 +96,12 @@ class JobController extends Controller
      */
     public function actionCreate($rid)
     {
+        $this->layout = 'search_candidate.php';
         $model = new Job();
 
         if ($model->load(Yii::$app->request->post())  ) {
             $model->recruiter_id = $rid;
-           // print_r(Yii::$app->request->post());exit;
+            $model->status = 0;
             $model->save(false);
             return $this->redirect('\recruiter\index'
                 );
@@ -95,6 +112,17 @@ class JobController extends Controller
         }
     }
 
+
+
+
+    //function which saves data through APIs
+
+
+
+
+
+
+
     /**
      * Updates an existing Job model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -103,9 +131,11 @@ class JobController extends Controller
      */
     public function actionUpdate($id)
     {
+        $this->layout = 'search_candidate';
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //print_r(Yii::$app->request->post());exit;
             return $this->redirect(['view', 'id' => $model->job_id]);
         } else {
             return $this->render('update', [
@@ -142,4 +172,115 @@ class JobController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+ public function actionCreatejob()
+    {   
+        try{
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = new Job();
+        //print_r($model->validate());exit;
+        //$model->scenario = Job::SCENARIO_CREATEJOB;
+        $model->attributes = Yii::$app->request->post();
+        if ($model->validate()) {
+
+            $model->save();
+            return array('status' => true, 'data' => 'job record is successfully updated');
+        }
+        else 
+        {
+            return array('status' => false, 'data' => $model->getErrors());
+        }
+    }
+    catch (ErrorException $e)
+    {
+         Yii::warning("error.");
+    }
+
+}
+
+
+
+
+//create users through APIs
+ public function actionCreateuser()
+    {   
+        
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = new user();
+        //print_r($model->validate());exit;
+        //$model->scenario = Job::SCENARIO_CREATEJOB;
+        $model->attributes = Yii::$app->request->post();
+       // print_r($model->attributes['type']);exit;
+        if ($model->validate()) {
+
+            if ( $this->triggerModuleEvent(UserAuthEvent::BEFORE_REGISTRATION, ['model'=>$model]) )
+             {
+               // print_r($model->attributes);exit;
+                $user = $model->save(false);
+                $userclass = 'webvimark\modules\UserManagement\UserManagementModule';
+                //print_r($model->id);exit;
+                // Trigger event "after registration" and checks if it's valid
+                if ( $this->triggerModuleEvent(UserAuthEvent::AFTER_REGISTRATION, ['model'=>$model, 'user'=>$user]) )
+                {
+                    if ( $user )
+                    {                        //{
+                            //$roles = (array)$userclass->rolesAfterRegistration;
+                            $roles = [];
+                            if($model->attributes['type'] == 0)
+                            {
+                            array_push($roles, 'candidate');
+                            $candidatemodel = new Candidate();
+                            $candidatemodel->name = $model->attributes['name'];
+                            $candidatemodel->candidate_id = $model->id;
+                            $candidatemodel->email_id = $model->attributes['username'];
+                            $candidatemodel->mobile_number = $model->attributes['mobile_number'];
+                            $candidatemodel->save(false);
+                            }
+                            else   array_push($roles, 'recruiter');
+                            foreach ($roles as $role)
+                            {
+                                User::assignRole($model->id, $role);
+                            }
+
+                        }                   
+                }
+            }
+
+            return array('status' => true, 'data' => 'job record is successfully updated');
+        }
+        else 
+        {
+            return array('status' => false, 'data' => $model->getErrors());
+        }
+    
+    
+
+}
+
+
+
+
+
+//get job info through api
+public function actionGetjob()
+{
+    Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = Job::find()->all();
+        if(count($model)>0)
+        {
+            return array('status'=>true,'data'=>$model);
+        }
+        else 
+        {
+            return array('status'=>false,'data'=>'no job found');
+        }
+}
+protected function triggerModuleEvent($eventName, $data = [])
+    {
+        $event = new UserAuthEvent($data);
+
+        $this->module->trigger($eventName, $event);
+
+        return $event->isValid;
+    }
+
 }

@@ -3,15 +3,6 @@
 $vendorDir = dirname(__DIR__);
 
 return array (
-  'yiisoft/yii2-bootstrap' => 
-  array (
-    'name' => 'yiisoft/yii2-bootstrap',
-    'version' => '2.0.6.0',
-    'alias' => 
-    array (
-      '@yii/bootstrap' => $vendorDir . '/yiisoft/yii2-bootstrap',
-    ),
-  ),
   'yiisoft/yii2-gii' => 
   array (
     'name' => 'yiisoft/yii2-gii',
@@ -39,15 +30,6 @@ return array (
       '@yii/swiftmailer' => $vendorDir . '/yiisoft/yii2-swiftmailer',
     ),
   ),
-  'yiisoft/yii2-debug' => 
-  array (
-    'name' => 'yiisoft/yii2-debug',
-    'version' => '2.0.9.0',
-    'alias' => 
-    array (
-      '@yii/debug' => $vendorDir . '/yiisoft/yii2-debug',
-    ),
-  ),
   'bubasuma/yii2-simplechat' => 
   array (
     'name' => 'bubasuma/yii2-simplechat',
@@ -57,13 +39,40 @@ return array (
       '@bubasuma/simplechat' => $vendorDir . '/bubasuma/yii2-simplechat',
     ),
   ),
+  'svbackend/yii2-wschat' => 
+  array (
+    'name' => 'svbackend/yii2-wschat',
+    'version' => '0.1.2.0',
+    'alias' => 
+    array (
+      '@svbackend/wschat' => $vendorDir . '/svbackend/yii2-wschat',
+    ),
+  ),
   'yiisoft/yii2-twig' => 
   array (
     'name' => 'yiisoft/yii2-twig',
-    'version' => '2.1.0.0',
+    'version' => '2.1.1.0',
     'alias' => 
     array (
       '@yii/twig' => $vendorDir . '/yiisoft/yii2-twig',
+    ),
+  ),
+  'yiisoft/yii2-bootstrap' => 
+  array (
+    'name' => 'yiisoft/yii2-bootstrap',
+    'version' => '2.0.7.0',
+    'alias' => 
+    array (
+      '@yii/bootstrap' => $vendorDir . '/yiisoft/yii2-bootstrap',
+    ),
+  ),
+  'yiisoft/yii2-debug' => 
+  array (
+    'name' => 'yiisoft/yii2-debug',
+    'version' => '2.0.12.0',
+    'alias' => 
+    array (
+      '@yii/debug' => $vendorDir . '/yiisoft/yii2-debug',
     ),
   ),
 );

@@ -22,10 +22,10 @@ class LoginForm extends Model
 	public function rules()
 	{
 		return [
-			[['username', 'password','type'], 'required'],
+			[['username', 'password'], 'required'],
 			['rememberMe', 'boolean'],
 			['password', 'validatePassword'],
-
+			['type','safe'],
 			['username', 'validateIP'],
 		];
 	}

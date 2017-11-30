@@ -11,6 +11,8 @@ use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use app\models\Jobsearch;
 use app\models\Job;
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
 
 /**
  * CandidateController implements the CRUD actions for Candidate model.
@@ -29,12 +31,14 @@ class CandidateController extends Controller
     ];
     }
 
+
     /**
      * Lists all Candidate models.
      * @return mixed
      */
     public function actionIndex()
     {
+        $this->layout = 'candidate.php';
         $searchModel = new jobsearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -51,16 +55,111 @@ class CandidateController extends Controller
      */
     public function actionView($id)
     {
+        $this->layout = 'candidate';
         return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionMessages()
+    {
+        $this->layout = 'candidate';
+        return $this->render('messages');
+    }
+
+    public function actionViewJob($id)
+    {
+        $this->layout = 'candidate';
+        return $this->render('view-job', [
             'model' => $this->findjob($id),
         ]);
     }
 
 
 
-    public function actionFilter()
+        public function actionGetjob($q,$skills)
     {
+        //print_r($q);
+        //echo "<br>";
+         // print_r($skills);
+         // exit;
+        $this->layout = 'aj.php';
+        $dt=explode(',', $q);
+        $skill=explode(',', $skills);
+        //print_r($skill);echo "<br>aaaaa";print_r($dt);exit;
+        if(!empty($skills) AND !empty($q)){
+
+       // print_r($skills);exit;
+         $query = Job::find()->where(['AND',['IN', 'location', $dt],['or like', 'skills', $skill]])->all();
+         //print_r($query);exit;
+           $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            // 'pagination' => [
+            //     'pageSize' => 10,
+            // ],
+            'sort' => [
+                
+            ],
+        ]);
+          // print_r($query);exit;
+       }
+      else if(!empty($q) AND empty($skills)){
+        $query = Job::find()->where(['AND',['IN', 'location', $dt],['status'=>0]])->all();
+         //print_r($query);exit;
+           $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                
+            ],
+        ]);
+      }
+
+      else if(!empty($skills) AND empty($q) )
+      {     
+            //$query = Job::find()->innerJoinWith('my_session', 'recruiter_id = my_session.user_id')->all();
         
+$query = new Query;
+$query  ->
+    from('job')
+    ->join('INNER JOIN', 'my_session',
+                'job.recruiter_id =my_session.user_id')
+    ->where('job.status=0')
+    ->all()  ; 
+    
+$command = $query->createCommand();
+$data = $command->queryAll();   
+            $query = $data;
+            $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                
+            ],
+        ]);
+      }
+       else if(empty($skills) AND empty($q) )
+      {
+                $query = Job::find()->where(['status'=>0])->all();
+         //print_r($query);exit;
+           $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            // 'pagination' => [
+            //     'pageSize' => 10,
+            // ],
+            'sort' => [
+                
+            ],
+        ]);
+      }
+      //print_r($q);exit;
+      return $this->render ('getjob.php', [
+            'query' => $query,
+        ]);
     }
 
 
@@ -95,6 +194,15 @@ class CandidateController extends Controller
         }
     }
 
+    //browse jobs
+        public function actionJobs()
+    {
+         $this->layout = 'candidate.php';
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
     /**
      * Updates an existing Candidate model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -103,24 +211,26 @@ class CandidateController extends Controller
      */
     public function actionUpdate($id)
     {
+        $this->layout = 'candidate';
         $model = $this->findModel($id);
         $model->scenario = 'request';
 
         if ($model->load(Yii::$app->request->post())  ) {
-            print_r($model->load(Yii::$app->request->post()));exit;
+            //print_r((Yii::$app->request->post()));exit;
+            //$model->profile_summary = Yii::$app->request->post()->profile_summary;
              $file = UploadedFile::getInstance($model, 'resume');
              if($file){  
           
            $model->resume = $id.'.'.$file->extension;
            // print_r($file);exit;
           
-          if($model->save())
+          if($model->save(false))
           {
             $file->saveAs('uploads/'.$model->resume);
           }
          }
          
-          else $model->save();
+          else $model->save(false);
             return $this->redirect(['view', 'id' => $model->candidate_id]);
         } else {
             return $this->render('update', [
@@ -161,7 +271,7 @@ class CandidateController extends Controller
 
 
      public function actionDownload($id) {
-     $path = Yii::getAlias('@webroot') . '/uploads/';
+     $path = Yii::getAlias('@webroot').'/uploads/';
      $model  =  $this->findModel($id);
     $file = $path . $model->resume;
     //print_r($file);exit;

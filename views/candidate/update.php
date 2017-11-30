@@ -5,11 +5,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\module\candidate\models\Candidate */
 
-$this->title = 'Update Candidate: ' . $model->name;
+$this->title = 'Profile : ' . $model->name;
 
 
 ?>
-<div class="candidate-update">
+<div class="container">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

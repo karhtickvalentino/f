@@ -9,6 +9,7 @@ use yii\widgets\DetailView;
 $this->title = $model->title;
 
 ?>
+<div class="container">
 <div class="job-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -40,4 +41,5 @@ $this->title = $model->title;
         ],
     ]) ?>
 
+</div>
 </div>

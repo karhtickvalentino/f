@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Recruiter;
+use app\models\Job;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\jobsearch */
@@ -11,41 +12,78 @@ use app\models\Recruiter;
 $this->title = 'Jobs';
 
 ?>
-<div class="job-index">
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="single">
+    <div class="container">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <div class="sixteen columns">
+            <h2>Manage Jobs</h2>
+            <nav id="breadcrumbs">
+                <ul>
+                    <li>You are here:</li>
+                    <li><a href="/recruiter/">Home</a></li>
+                    <li>Job Dashboard</li>
+                </ul>
+            </nav>
+        </div>
 
-   
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+    </div>
+</div>
 
-          [
-                'label'    =>    'Company',
-                'format'=>'raw',
-                    'value' => function($data1){
-                        $roleLabel = Recruiter::find()->where(['=', 'recruiter_id', $data1->recruiter_id])->one();
-                        if(!empty($roleLabel)){
-                            return $roleLabel->company_name;
-                        }
-                        else{
-                            return '-';
-                        }
-                    }
-            ],
-            'title',
-            'description:ntext',
-           // 'experience_minimum',
-            // 'experience_maximun',
-            // 'salary',
-             'location',
-             'industry',
-            // 'created_on',
+<div class="container">
+<!-- Table -->
+    <div class="sixteen columns">
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+        <p class="margin-bottom-25">Your listings are shown in the table below. Expired listings will be automatically removed after 30 days.</p>
+
+
+        <table class="manage-table responsive-table">
+ <tr>
+                <th><i class="fa fa-file-text"></i> Title</th>
+                <th><i class="fa fa-check-square-o"></i> Filled?</th>
+                <th><i class="fa fa-calendar"></i> Date Posted</th>
+                <th><i class="fa fa-file-text"></i> Industry</th>
+                <th><!-- <i class="fa fa-calendar"></i> --> Actions</th>
+                
+                <th></th>
+            </tr>
+
+ <?php 
+      $query = Job::find()->where(['recruiter_id'=>Yii::$app->user->id])->all();
+      $i = 0;
+      foreach ($query as  $val) {
+       // print_r($val);
+         
+        if($i <= 5)
+        {
+        ?>
+           <!-- Items -->
+            <tr>
+                <td class="title"><a href="view?id=<?php echo $val['job_id'] ?>"><?php echo $val['title'] ?></a></td>
+                <td class="centered"><?php if($val['status'])
+                                            echo 'filled'; 
+                                           else echo 'open';?>
+                </td>
+                <td><?php echo Yii::$app->formatter->asDate($val['created_on']); ?></td>
+                
+                <td><?php echo $val['industry'] ?>
+                <td class="action">
+                    <a href="/job/update?id=<?php echo $val['job_id']; ?>"><i class="fa fa-pencil"></i> Edit</a>
+                    <a href="delete?id=<?php echo $val['job_id'] ?>" class="delete"><i class="fa fa-remove"></i> Delete</a>
+                </td>
+            </tr>
+
+<?php    } $i = $i+1; }
+    ?>
+
+        </table>
+
+        <br>
+        <a href="create?rid=<?php echo Yii::$app->user->id?>" class="button">Add Job</a>
+
+    </div>
+
+
+
 </div>

@@ -19,12 +19,15 @@ class JobAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
-        'css/bootstrap-3.1.1.min.css',
-         'css/style.css',
-        // 'css/tourist.css'
+        //'css/bootstrap-3.1.1.min.css',
+         //'css/style.css',
+        'css1/chat.css',
+        //'css1/screen.css',
        
     ];
     public $js = [
+    'js1/chat.js',
+    'js/jquery.flexisel.js'
         // 'js/underscore-1.4.4.js',
         // 'js/backbone-1.0.0.js',
         // 'js/jquery-ui-1.10.2.custom.js',
