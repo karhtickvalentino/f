@@ -12,6 +12,7 @@ use app\models\Job;
 use webvimark\modules\UserManagement\models\User;
 use webvimark\modules\UserManagement\models\forms\PasswordRecoveryForm;
 use yii\widgets\ActiveForm;
+use yii\web\NotFoundHttpException;
 
 class SiteController extends Controller
 {
@@ -75,6 +76,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+      $this->layout = 'main.php';
         if(Yii::$app->user->isGuest) 
             return $this->render('index');
         elseif (yii::$app->user->identity->type==0) {
@@ -99,19 +101,42 @@ class SiteController extends Controller
        public function actionPassword()
     {
         $this->layout = 'main2.php';
-        $model = new user();
+        
+        $model = new User();
         if ($model->load(Yii::$app->request->post())) {
-             $query = user::find()->where(['username'=>$model->email])->one();
-             if($query)
-                 $password = $query->password_hash;
-                //$new = Yii::$app->getSecurity()->validatePassword($password);
-                //print_r($password);
+            $emailid = $_POST['User']['email'];
+            $user = User::findOne(['email' => $emailid]);
+             if($user)
+                 {
+                    $length = 10;
+                    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    $charactersLength = strlen($characters);
+                    $randomString = '';
+                    for ($i = 0; $i < $length; $i++) {
+                    $randomString .= $characters[rand(0, $charactersLength - 1)];
+                  }
+                $user->password = $randomString;
+                $user->save(false);
+
+                Yii::$app->mailer->compose()
+                ->setFrom('kumarkarthi110.2@gmail.com')
+                ->setTo($user->email)
+                ->setSubject('Here and Now Password Change')
+                ->setTextBody($randomString)
+                ->setHtmlBody('<b>HTML content</b>')
+                ->send();
+                $_SESSION['errorMsg'] = 'Password changed sucessfully. Please check your E-mail.';
+                return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
+                return $this->redirect('/');
+            }   
+            else throw new NotFoundHttpException("user not found");
+            
             //return $this->redirect(['view', 'id' => $model->candidate_id]);
         } else {
             return $this->render('password',['model'=>$model]);
         }
         
-        
+        //OVAJQ6fQWR
     }
 
 

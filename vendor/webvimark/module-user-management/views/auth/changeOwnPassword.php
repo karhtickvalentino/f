@@ -34,13 +34,13 @@ $this->title = UserManagementModule::t('back', 'Change password');
 				]); ?>
 
 				<?php if ( $model->scenario != 'restoreViaEmail' ): ?>
-					<?= $form->field($model, 'current_password')->passwordInput(['maxlength' => 255, 'autocomplete'=>'off']) ?>
+					<?= $form->field($model, 'current_password')->passwordInput(['maxlength' => 255, 'autocomplete'=>'off','class'=>'input-text']) ?>
 
 				<?php endif; ?>
 
-				<?= $form->field($model, 'password')->passwordInput(['maxlength' => 255, 'autocomplete'=>'off']) ?>
+				<?= $form->field($model, 'password')->passwordInput(['maxlength' => 255, 'autocomplete'=>'off','class'=>'input-text']) ?>
 
-				<?= $form->field($model, 'repeat_password')->passwordInput(['maxlength' => 255, 'autocomplete'=>'off']) ?>
+				<?= $form->field($model, 'repeat_password')->passwordInput(['maxlength' => 255, 'autocomplete'=>'off','class'=>'input-text']) ?>
 
 
 				<div class="form-group">

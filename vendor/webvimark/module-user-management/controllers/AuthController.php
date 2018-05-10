@@ -91,7 +91,7 @@ class AuthController extends BaseController
 	public function actionLogout()
 	{
 		
-		MySession::deleteAll('user_id ='.yii::$app->user->id);
+		//MySession::deleteAll('user_id ='.yii::$app->user->id);
 		//MySession::delete(yii::$app->user->id);
 		Yii::$app->user->logout();
 		return $this->redirect(Yii::$app->homeUrl);
@@ -105,7 +105,9 @@ class AuthController extends BaseController
 	 */
 	public function actionChangeOwnPassword()
 	{
+		if(yii::$app->user->identity->type == 0)
 		$this->layout = '/candidate.php';
+		else $this->layout = '/search_candidate.php';
 		if ( Yii::$app->user->isGuest )
 		{
 			return $this->goHome();
@@ -209,6 +211,14 @@ class AuthController extends BaseController
 							}
 
 							Yii::$app->user->login($user);
+											$ses= new \app\models\MySession;
+				$ses->user_id = yii::$app->user->id;
+				$ses->name = yii::$app->user->username;
+				 $sql = "SELECT * FROM my_session where user_id= $ses->user_id";
+                 $command = Yii::$app->db->createCommand($sql);
+ 				 $res=$command->queryAll();
+ 				 if(!$res)
+ 				 	$ses->save();
 							if(Yii::$app->user->identity->type == 1){
 							$recModel= new \app\models\Recruiter;
 							//print_r($model);exit;

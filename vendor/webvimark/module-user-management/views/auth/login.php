@@ -29,10 +29,10 @@ use yii\helpers\Html;
 					]) ?>
 
 					<?= $form->field($model, 'username')
-						->textInput(['placeholder'=>$model->getAttributeLabel('username'), 'autocomplete'=>'off']) ?>
+						->textInput(['placeholder'=>$model->getAttributeLabel('username'), 'autocomplete'=>'off','class'=>'input-text']) ?>
 						
 					<?= $form->field($model, 'password')
-						->passwordInput(['placeholder'=>$model->getAttributeLabel('password'), 'autocomplete'=>'off']) ?>
+						->passwordInput(['placeholder'=>$model->getAttributeLabel('password'), 'autocomplete'=>'off','class'=>'input-text']) ?>
 
 						
 						

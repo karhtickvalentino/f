@@ -26,6 +26,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrapper">
+
 <!-- Header
 ================================================== -->
 <header class="sticky-header">
@@ -35,7 +36,7 @@ AppAsset::register($this);
         <!-- Logo -->
 
         <div id="logo">
-            <h1><a href="/candidate/"><img src="/images/logo.png" alt="Here And Now" /></a></h1>
+            <h1><a href="/candidate/"><img src="/images/logo2.png" alt="Here And Now" /></a></h1>
         </div>
 
         <!-- Menu -->
@@ -44,7 +45,20 @@ AppAsset::register($this);
 
                 <li><a href="/">Home</a>
                 </li>
-               
+                <li><a href="#">For Candidates</a>
+                    <ul>
+                         <li><a href="/user-management/auth/registration"><i class="fa fa-user"></i> Sign Up</a></li>
+                         <li><a href="/user-management/auth/login"><i class="fa fa-lock"></i> Log In</a></li>
+                    </ul>
+                </li>
+
+               <li><a href="#">For Employer</a>
+                    <ul>
+                        <li><a href="/user-management/auth/login?type=emp">Login</a></li>
+                        <li><a href="/user-management/auth/registration?type=emp">Sign Up</a></li>
+
+                    </ul>
+                </li>
             </ul>
 
         </nav>
@@ -67,6 +81,24 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
+                   <?php 
+if(isset($_SESSION['errorMsg'])){
+    $msg = $_SESSION['errorMsg'] ;
+    unset($_SESSION['errorMsg']);
+}
+else{
+    $msg = '';
+}?>
+
+<?php 
+    if($msg != ""){ 
+             if(preg_match('/not/', $msg) OR preg_match('/Not/', $msg)){          
+                echo '<div class="alert alert-danger">'.$msg.'</div>';
+            }else{
+                echo '<div class="alert alert-success">'.$msg.'</div>';
+            } 
+        }
+     ?>
         <?= $content ?>
     </div>
 </div>
@@ -104,29 +136,7 @@ AppAsset::register($this);
             </ul>
         </div>
         
-        <div class="three columns">
-            <h4>Press</h4>
-            <ul class="footer-links">
-                <li><a href="#">In the News</a></li>
-                <li><a href="#">Press Releases</a></li>
-                <li><a href="#">Awards</a></li>
-                <li><a href="#">Testimonials</a></li>
-                <li><a href="#">Timeline</a></li>
-            </ul>
-        </div>      
 
-        <div class="three columns">
-            <h4>Browse</h4>
-            <ul class="footer-links">
-                <li><a href="#">Freelancers by Category</a></li>
-                <li><a href="#">Freelancers in USA</a></li>
-                <li><a href="#">Freelancers in UK</a></li>
-                <li><a href="#">Freelancers in Canada</a></li>
-                <li><a href="#">Freelancers in Australia</a></li>
-                <li><a href="#">Find Jobs</a></li>
-
-            </ul>
-        </div>
 
     </div>
 

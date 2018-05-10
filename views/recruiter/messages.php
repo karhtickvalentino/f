@@ -6,6 +6,7 @@ use app\models\Recruiter;
 use app\models\Job;
 use app\models\Chat;
 use webvimark\modules\UserManagement\models\User;
+use app\models\MySession;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\jobsearch */
@@ -43,7 +44,7 @@ $this->title = 'Jobs';
                 <th><i class="fa fa-user"></i> Name</th>
                 <th><i class="fa fa-file-text"></i> Profile</th>
                 <th><i class="fa fa-check-square-o"></i> Status</th>
-                <th><i class="fa fa-file-text"></i> Remarks</th>
+                <!-- <th><i class="fa fa-file-text"></i> Remarks</th> -->
             </tr>
 
  <?php 
@@ -68,8 +69,10 @@ $this->title = 'Jobs';
                     <?php 
                             echo $val; ?></a></td>
                 <td class=""><a href="/view-candidate/view?id=<?php echo $query->id ?>">view</a></td>
-                <td class="">-</td>
-                <td class=""></td>
+                <?php $status = MySession::find()->where(['user_id'=>$query->id])->one(); ?>
+
+                <td class=""><?php if($status)echo '<div style="color:green">online</div>'; else echo '<div style="color:red">offline</div>';?></td>
+                <!-- <td class=""></td> -->
             </tr>
 
 

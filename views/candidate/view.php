@@ -16,13 +16,13 @@ $this->title = 'Profile';
 	<div class="container">
 		<div class="ten columns">
 			<div class="resume-titlebar">
-				<img src="/images/resumes-list-avatar-01.png" alt="">
+				<!-- <img src="/images/resumes-list-avatar-01.png" alt=""> -->
 				<div class="resumes-list-content">
 					<h4><?php echo $model->name; ?> <span><?php echo $model->role; ?></span></h4>
 					<span class="icons"><i class="fa fa-map-marker"></i> <?php echo $model->location; ?></span>
 					<span class="icons"><i class="ln ln-icon-Management"></i> <?php echo $model->experience; ?></span>
 					<span class="icons"><a href="#"><i class="fa fa-link"></i> Website</a></span>
-					<span class="icons"><a href="mailto:john.doe@example.com"><i class="fa fa-envelope"></i> <?php echo $model->email_id; ?></a></span>
+					<span class="icons"><a href="mailto:<?php echo $model->email_id;?>"><i class="fa fa-envelope"></i> <?php echo $model->email_id; ?></a></span>
 					<div class="skills">
 						<?php $sk1 = explode(",",$model['skills']); 
                             foreach ($sk1 as $sk2) {
@@ -34,11 +34,11 @@ $this->title = 'Profile';
 				</div>
 			</div>
 		</div>
-
+ 
 		<div class="six columns">
 			<div class="two-buttons">
 
-				<a href="/candidate/download?id=<?php echo $model->candidate_id; ?>" class="button"><i class="fa fa-envelope"></i> Resume</a>
+				<a href="/candidate/download?id=<?php echo $model->candidate_id; ?>" class="button"><i class="ln ln-icon-Download"></i> Resume</a>
 
 				<a href="/candidate/update?id=<?php echo $model->candidate_id?>" class="button dark"><i class="fa fa-pencil"></i> Edit</a>
 
@@ -58,6 +58,22 @@ $this->title = 'Profile';
 
 		<p class="margin-reset">
 			<?php echo $model->profile_summary; ?>
+		</p>
+		
+		<br>	
+		<p>
+			<h4>Strengths And Achivements</h4>
+		</p>
+		<p>
+			<?php echo $model->strengths_and_achivements; ?>
+		</p>
+
+		<br>
+		<p>
+			<h4>Languages known</h4>
+		</p>
+		<p>
+			<?php echo $model->languages_spoken; ?>
 		</p>
 
 		<br>
@@ -100,7 +116,9 @@ $this->title = 'Profile';
 			<dd>
 				<p><?php 
 					$type = WorkType::find()->where(['work_type_id'=>$model->worktype])->one();
-				echo $type->name;	 ?></p>
+					if($type)
+				echo $type->name;
+				else echo '--';	 ?></p>
 			</dd>
 			
 		</dl>

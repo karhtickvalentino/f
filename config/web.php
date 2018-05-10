@@ -59,7 +59,17 @@ $config = [
 
     ],
     'components' => [
-
+                        'session' => [
+                        'class' => 'yii\web\DbSession',
+                        // 'db' => 'mydb',
+                        // 'sessionTable' => 'my_session',
+                        'writeCallback' => function($session){
+                            return [
+                                'user_id' => Yii::$app->user->id,
+                                'last_write' => time(),
+                            ];
+                        }
+                    ],
 
                   'DbHttpSession' => [
                   'class' => 'components\DbHttpSession',
@@ -69,7 +79,20 @@ $config = [
                 ],
 
 
-
+                'mail' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => 'mail',
+            'useFileTransport' => false,//to send mails to real email addresses else will get stored in your mail/runtime folder
+            //comment the following array to send mail using php's mail function
+             'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',
+                'username' => 'admin@metrimap.com',
+                'password' => 'metrigmail',
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
+        ],
 
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -94,7 +117,7 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

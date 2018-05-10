@@ -24,6 +24,7 @@ use yii\helpers\ArrayHelper;
 </style>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDRhY5zBxFEA2iTm5C63hZSIgIbcRwyW28&libraries=places"></script>
 <script type="text/javascript">
+    var IsplaceChange = false;
         google.maps.event.addDomListener(window, 'load', function () {
             var places = new google.maps.places.Autocomplete(document.getElementById('txtPlaces'), { types: ['(cities)']});
             google.maps.event.addListener(places, 'place_changed', function () {
@@ -36,10 +37,11 @@ use yii\helpers\ArrayHelper;
                 mesg += "\nLongitude: " + longitude;
                 //alert(place);
                 //console.log(place.name);
+                IsplaceChange = true;
             });
         });
     </script>
-    <script type="text/javascript">
+<!--     <script type="text/javascript">
         google.maps.event.addDomListener(window, 'load', function () {
             var places = new google.maps.places.Autocomplete(document.getElementById('txtPlaces2'), { types: ['(cities)']});
             google.maps.event.addListener(places, 'place_changed', function () {
@@ -54,45 +56,50 @@ use yii\helpers\ArrayHelper;
                 //console.log(place.name);
             });
         });
-    </script>
+    </script> -->
     
 
 <div class="candidate-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true,'class'=>'input-text']) ?>
 
 
-    <?= $form->field($model, 'profile_summary')->textarea(['rows' => 3,'cols'=>40,'class'=>'WYSIWYG','spellcheck'=>true,'placeholder'=>'Brief description about you.']) ?>
+    <?= $form->field($model, 'profile_summary')->textarea(['rows' => 10,'cols'=>10,'spellcheck'=>true,'placeholder'=>'Brief description about you.']) ?>
     <br>
     
      
-    <?= $form->field($model, 'role')->textarea(['rows' => 3,'cols'=>40,'class'=>'WYSIWYG','spellcheck'=>true]) ?>
+    <?= $form->field($model, 'role')->textarea(['rows' => 10,'cols'=>40,'spellcheck'=>true,'placeholder'=>'Role ex: sr.developer']) ?>
     <br>
     
          
-    <?= $form->field($model, 'education')->textarea(['rows' => 3,'cols'=>40,'class'=>'WYSIWYG','spellcheck'=>true]) ?>
+    <?= $form->field($model, 'education')->textarea(['rows' => 10,'cols'=>40,'spellcheck'=>true,'placeholder'=>'Brief description about your education']) ?>
     <br>
     
     
 
-    <?= $form->field($model, 'mobile_number')->textInput() ?>
+    <?= $form->field($model, 'mobile_number')->textInput(['class'=>'input-text']) ?>
      
     
-     <?= $form->field($model, 'location')->textInput(['id'=>'txtPlaces'])->label('City') ?>
+     <?= $form->field($model, 'location')->textInput(['id'=>'txtPlaces','class'=>'input-text'])->label('City') ?>
 
-    <?= $form->field($model, 'experience')->textInput() ?>
+    <?= $form->field($model, 'experience')->textInput(['class'=>'input-text']) ?>
 
-    <?= $form->field($model, 'skills')->textInput(['maxlength' => true,'placeholder'=>'seperate skills by comma']) ?>
+    <?= $form->field($model, 'skills')->textInput(['maxlength' => true,'placeholder'=>'seperate skills by comma','class'=>'input-text']) ?>
+
+    <?= $form->field($model, 'strengths_and_achivements')->textarea(['rows' => 10,'cols'=>40,'spellcheck'=>true,'placeholder'=>'Brief description about strengths and achivements or links to your work']) ?>
+    <br>
             
-    <?= $form->field($model, 'languages_spoken')->textInput() ?>
+    <?= $form->field($model, 'languages_spoken')->textInput(['class'=>'input-text']) ?>
 
-    <div class="form">                
+    <div class="form">
+
                    <?= $form->field($model, 'resume')->fileInput(['label class'=>'upload-btn']) ?>
-      
+                   <br><br>
+    Note: Only files with these extensions are allowed: doc, docx, rtf, pdf.                
             </div>
-<br><br><br>
+<br>
     
 
     <!-- Notice -->
@@ -113,7 +120,7 @@ use yii\helpers\ArrayHelper;
 
                         echo $form->field($model, "worktype")->dropDownList($data,['prompt'=>'Select Work Type']); ?>
     
-    <?= $form->field($model, 'worklocation')->textInput(['id'=>'txtPlaces2']) ?>
+    <?= $form->field($model, 'worklocation')->textInput(['id'=>'txtPlaces3','class'=>'input-text']) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Continue' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

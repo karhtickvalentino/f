@@ -8,6 +8,7 @@ use app\models\Recruitersearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Candidate;
 
 /**
  * RecruiterController implements the CRUD actions for Recruiter model.
@@ -79,6 +80,22 @@ class RecruiterController extends Controller
         }
     }
 
+
+
+//download candidates resume
+     public function actionDownload($id) {
+     $path = Yii::getAlias('@webroot').'/uploads/';
+     $model  =  $this->findCandiate($id);
+    $file = $path . $model->resume;
+    //
+    if($model->resume)
+     if (file_exists($file)) {
+      //print_r($file);exit;  
+     return Yii::$app->response->sendFile($file);
+
+    }
+   // return $this->redirect('index');
+  }
     /**
      * Updates an existing Recruiter model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -122,6 +139,16 @@ class RecruiterController extends Controller
     protected function findModel($id)
     {
         if (($model = Recruiter::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    //find candidate model
+        protected function findCandiate($id)
+    {
+        if (($model = Candidate::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

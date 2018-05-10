@@ -6,7 +6,6 @@ use app\models\Recruiter;
 use app\models\Job;
 use app\models\WorkType;
 use app\models\MySession;
-
 /* @var $this yii\web\View */
 /* @var $searchModel app\module\candidate\models\Candidatesearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -25,9 +24,7 @@ use app\models\MySession;
             <h2>Web, Software & IT</h2>
         </div>
 
-        <div class="six columns">
-            <a href="#" class="button">Live chat with recruiters for free</a>
-        </div>
+        
 
     </div>
 </div>
@@ -47,7 +44,7 @@ use app\models\MySession;
         <ul class="job-list full">
 
              <?php 
-      $query = Job::find()->where(['status' => 0])->all();
+      $query = Job::find()->where(['status' => 0])->orderBy(['job_id' => SORT_DESC])->all();
       foreach ($query as  $val) {
        // print_r($val);
         ?>
@@ -59,14 +56,22 @@ use app\models\MySession;
                         if($role_label)
                         echo $role_label->name;
                         else echo '--'; ?>"><?php 
-                $role_label = WorkType::find()->where(['=', 'work_type_id', $val['worktype']])->one();
+                //$role_label = WorkType::find()->where(['=', 'work_type_id', $val['worktype']])->one();
                         if($role_label)
                         echo $role_label->name;
                         else echo '--'; ?></span></h4>
                          <?php 
-                     $online = MySession::find()->where(['=','user_id',$val['recruiter_id']])->all();
-                     if($online) {
+                      
+                      $sql = "SELECT * FROM session where ((user_id = :userid) and (last_write ) > (:now - 1800))";
+                      //print_r($sql);exit;
 
+                      $command = Yii::$app->db->createCommand($sql);
+                      $command->bindValue(':userid', $val['recruiter_id']);
+                      $command->bindValue(':now', time());
+                      $res=$command->queryAll();
+                      if($res) {
+
+                      
                          echo '<div style="color:green;float:right">online-chat now</div>';
                      }
                      else
@@ -118,7 +123,7 @@ use app\models\MySession;
  
             Filter By Location
  
-              <?php $loc = Job::find()->Select('location')->distinct()->all(); //print_r($loc);exit;
+              <!-- <?php $loc = Job::find()->Select('location')->distinct()->all(); //print_r($loc);exit;
                 $locarray = [];
                 foreach ($loc as $l) {  
                 $dbloc = explode(',', $l['location']);
@@ -129,7 +134,16 @@ use app\models\MySession;
 
                <label style="font-weight: 300">  <input type="checkbox" name="location" value="<?php print_r($dbloc[0]); ?>" id="<?php print_r($dbloc[0]);?>" class="filters"> <?php print_r($dbloc[0]); ?></label>
                 <?php    }}
-                ?>
+                ?> -->
+                <?php $loc = Job::find()->Select('location')->distinct()->all(); //print_r($loc);exit;
+              $locarray = [];
+              foreach ($loc as $l) {  
+                if(!empty($l['location'])){
+                  ?>
+
+                  <label style="font-weight: 300">  <input type="checkbox" name="location" value="<?php print_r($l['location']); ?>" id="<?php print_r($l['location']);?>" class="filters"> <?php print_r($l['location']); ?></label>
+                  <?php    }}
+                  ?>
             </div>
 
         </div>

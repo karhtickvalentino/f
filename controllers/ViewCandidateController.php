@@ -66,31 +66,33 @@ class ViewCandidateController extends Controller
 
     
 
-        public function actionGetuser($q,$skills)
+        public function actionGetuser($q,$skills,$status)
     {
         
         $this->layout = 'aj.php';
         $dt=explode(',', $q);
         $skill=explode(',', $skills);
+        //print_r($status);exit;
         if(!empty($skills) AND !empty($q)){
-         $query = Candidate::find()->where(['AND',['or like', 'location', $dt],['or like', 'skills', $skill]])->all();
+         $query = Candidate::find()->where(['AND',['or like', 'location', $dt],['or like', 'skills', $skill]])->orderBy(['candidate_id' => SORT_DESC])->all();
        }
       else if(!empty($q) AND empty($skills)){
-        $query = Candidate::find()->where(['or like', 'location', $dt])->all();
+        $query = Candidate::find()->where(['or like', 'location', $dt])->orderBy(['candidate_id' => SORT_DESC])->all();
 
       }
 
       else if(!empty($skills) AND empty($q) )
       {
-          $query = Candidate::find()->where(['or like', 'skills', $skill])->all();
+          $query = Candidate::find()->where(['or like', 'skills', $skill])->orderBy(['candidate_id' => SORT_DESC])->all();
       }
        else if(empty($skills) AND empty($q) )
       {
-           $query = Candidate::find()->all();
+           $query = Candidate::find()->orderBy(['candidate_id' => SORT_DESC])->all();
       }
     
       return $this->render ('getuser.php', [
             'query' => $query,
+            'status' => $status,
         ]);
     }
     

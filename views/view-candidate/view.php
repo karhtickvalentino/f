@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\models\MySession;
 use webvimark\modules\UserManagement\models\User;
+use app\models\WorkType;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Candidate */
@@ -19,10 +20,10 @@ $this->title = $model->name;
             <div class="resume-titlebar">
                 <img src="/images/resumes-list-avatar-01.png" alt="">
                 <div class="resumes-list-content">
-                    <h4><?php echo $model->name; ?><span>UX/UI Graphic Designer</span></h4>
+                    <h4><?php echo $model->name; ?><span><?php echo $model->role; ?></span></h4>
                     <span class="icons"><i class="fa fa-map-marker"></i><?php echo $model->location; ?></span>
                     
-                    <span class="icons"><a href="#"><i class="fa fa-link"></i> Website</a></span>
+                    <span class="icons"><a href="#"><i class="fa fa-link"></i>-</a></span>
                    
                     <div class="skills">
                     <?php $sk1 = explode(",", $model->skills); 
@@ -39,18 +40,22 @@ $this->title = $model->name;
 
         <div class="six columns">
             <div class="two-buttons">
-                <?php $q = MySession::find()->where(['user_id'=>$model->candidate_id])->one();
-                //print_r($q);print_r($model->candidate_id);exit;
-                    if($q){  $c = user::find()->where(['id' => $model->candidate_id])->one();
+                <?php 
+
+                     $sql = "SELECT * FROM session where ((user_id = :userid) and (last_write ) > (:now - 1800))";           $command = Yii::$app->db->createCommand($sql);
+                      $command->bindValue(':userid', $model->candidate_id);
+                       $command->bindValue(':now', time());
+                      $res=$command->queryAll();
+                    if($res){  
                  ?>
-                <a href="#" class="button" onclick="chatWith('<?php echo $c->chatname; ?>')"><i class="ln ln-icon-Speach-Bubble"></i> Chat</a>
+                <a href="/message?id=<?php echo $model->candidate_id; ?>" class="button" ><i class="ln ln-icon-Speach-Bubble"></i> Chat</a>
                 <?php } 
                     else {
                 ?>
                  <a href="#" class="button" ><i class="ln ln-icon-Speach-Bubble"></i> Offline</a>
                  <?php }?>
 
-                <a href="#" class="button dark"><i class="fa fa-star"></i> Bookmark This Resume</a>
+                 <a href="/recruiter/download?id=<?php echo $model->candidate_id?>" class="button dark"><i class="fa fa-star"></i> Download Resume</a>
 
 
             </div>
@@ -69,7 +74,19 @@ $this->title = $model->name;
 
            <?php echo $model->profile_summary; ?>
         </p>
-
+        <br>    
+        <p>
+            <h4>Strengths And Achivements</h4>
+        </p>
+        <p>
+            <?php echo $model->strengths_and_achivements; ?>
+        </p>
+        <p>
+            <h4>Languages known</h4>
+        </p>
+        <p>
+            <?php echo $model->languages_spoken; ?>
+        </p>
         <br>
 
     </div>
@@ -106,7 +123,11 @@ $this->title = $model->name;
                 <strong>Prefered Work Type</strong>
             </dt>
             <dd>
-                <p><?php echo $model->worktype   ?></p>
+                <p><?php 
+                    $type = WorkType::find()->where(['work_type_id'=>$model->worktype])->one();
+                    if($type)
+                echo $type->name;
+                else echo '--';  ?></p>
             </dd>
         </dl>
     </div>

@@ -33,12 +33,12 @@ class Candidate extends \yii\db\ActiveRecord
     {
         return [
             [['candidate_id', 'name', 'email_id', 'mobile_number'], 'required'],
-            [['candidate_id', 'mobile_number', 'experience'], 'integer'],
-            [['name', 'email_id', 'location'], 'string', 'max' => 255],
+            [['candidate_id',], 'integer'],
+            [['name', 'email_id', 'location','experience','mobile_number'], 'string', 'max' => 255],
             [['skills'], 'string', 'max' => 1025],
             [['resume'],'file', 'extensions' => 'doc, docx, rtf, pdf'],
-            [['skills','experience','location','profile_summary','education','worktype','worklocation','location','role'],'required','on'=>'request'],
-            [['languages_spoken'],'safe']
+            [['skills','experience','location','profile_summary','education','worktype','location','role'],'required','on'=>'request'],
+            [['languages_spoken','strengths_and_achivements','worklocation'],'safe']
         ];
     }
 

@@ -46,7 +46,7 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true,'class'=>'search-field']) ?>
     
-    <?= $form->field($model, 'description')->textarea(['rows' => 3,'cols'=>40,'class'=>'WYSIWYG','spellcheck'=>true]) ?>
+    <?= $form->field($model, 'description')->textarea(['rows' => 3,'cols'=>40,'spellcheck'=>true]) ?>
     <br>
     
     Experience Minimum (years)
@@ -78,8 +78,7 @@ use yii\helpers\ArrayHelper;
     
 
 
-     <?php if(!$model->isNewRecord)
-     echo  $form->field($model, "status")->checkbox(['label'=>'Filled?']); ?>
+
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Post' : 'Update', ['class' => $model->isNewRecord ? 'button big margin-top-5' : 'btn btn-primary']) ?>

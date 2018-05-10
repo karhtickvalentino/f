@@ -23,10 +23,11 @@ class AppAsset extends AssetBundle
         // 'css/base.css',
         // 'css/responsive.css',
         //chat css,
-        'css/colors/green',
-        'css1/chat.css',
+        'css/colors/green.css',
+        //'css1/chat.css',
         //'css/screen.css',
-        //end of chat css
+        //end of chat css,
+        'css/fbchat',
     ];
     public $js = [
     'scripts/custom.js',
@@ -44,8 +45,9 @@ class AppAsset extends AssetBundle
     'scripts/headroom.min.js',
     //'scripts/jquery.sceditor.bbcode.min.js',
     'scripts/jquery.sceditor.js',
-    'js1/chat.js',
-    'scripts/editor.js'
+    // 'js1/chat.js',
+    'scripts/editor.js',
+    'js/script.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -87,7 +87,7 @@ AppAsset::register($this);
 	<div class="container">
 
 		<div class="sixteen columns">
-			<h2>My Account</h2>
+			<h2><?php if(isset($_GET['type'])) echo 'Employee';else echo 'Candidate';?> Account</h2>
 			<nav id="breadcrumbs">
 				<ul>
 					<li>You are here:</li>

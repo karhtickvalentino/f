@@ -9,6 +9,7 @@ use app\models\Job;
   <div class="padding-right">
     <h3 class="margin-bottom-25">Recent Jobs</h3>
     <ul class="job-list">
+
     <?php 
       $query = Job::find()->all();
       $i = 0;

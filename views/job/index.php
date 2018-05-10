@@ -35,13 +35,11 @@ $this->title = 'Jobs';
 <!-- Table -->
     <div class="sixteen columns">
 
-        <p class="margin-bottom-25">Your listings are shown in the table below. Expired listings will be automatically removed after 30 days.</p>
-
 
         <table class="manage-table responsive-table">
  <tr>
                 <th><i class="fa fa-file-text"></i> Title</th>
-                <th><i class="fa fa-check-square-o"></i> Filled?</th>
+
                 <th><i class="fa fa-calendar"></i> Date Posted</th>
                 <th><i class="fa fa-file-text"></i> Industry</th>
                 <th><!-- <i class="fa fa-calendar"></i> --> Actions</th>
@@ -61,10 +59,7 @@ $this->title = 'Jobs';
            <!-- Items -->
             <tr>
                 <td class="title"><a href="view?id=<?php echo $val['job_id'] ?>"><?php echo $val['title'] ?></a></td>
-                <td class="centered"><?php if($val['status'])
-                                            echo 'filled'; 
-                                           else echo 'open';?>
-                </td>
+
                 <td><?php echo Yii::$app->formatter->asDate($val['created_on']); ?></td>
                 
                 <td><?php echo $val['industry'] ?>

@@ -48,7 +48,7 @@ AppAsset::register($this);
 
                 <li><a href="/candidate/view?id=<?php echo yii::$app->user->id?>"><i class="fa fa-user"></i> Profile</a></li>
                 
-                <li><a href="/candidate/messages">Messages</a>
+                <li><a href="/message">Messages</a>
                 </li>
                
             </ul>
@@ -111,16 +111,7 @@ AppAsset::register($this);
             </ul>
         </div>
         
-        <div class="three columns">
-            <h4>Press</h4>
-            <ul class="footer-links">
-                <li><a href="#">In the News</a></li>
-                <li><a href="#">Press Releases</a></li>
-                <li><a href="#">Awards</a></li>
-                <li><a href="#">Testimonials</a></li>
-                <li><a href="#">Timeline</a></li>
-            </ul>
-        </div>      
+     
 
 
     </div>

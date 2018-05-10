@@ -79,120 +79,47 @@ class CandidateController extends Controller
 
         public function actionGetjob($q,$skills)
     {
-        //print_r($q);
-        //echo "<br>";
-         // print_r($skills);
-         // exit;
+
         $this->layout = 'aj.php';
         $dt=explode(',', $q);
         $skill=explode(',', $skills);
-        //print_r($skill);echo "<br>aaaaa";print_r($dt);exit;
+        $status = $skill[0];
         if(!empty($skills) AND !empty($q)){
-
-       // print_r($skills);exit;
-         $query = Job::find()->where(['AND',['IN', 'location', $dt],['or like', 'skills', $skill]])->all();
-         //print_r($query);exit;
-           $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            // 'pagination' => [
-            //     'pageSize' => 10,
-            // ],
-            'sort' => [
-                
-            ],
-        ]);
-          // print_r($query);exit;
+         $query = Job::find()->where(['or like', 'location', $dt])->orderBy(['job_id' => SORT_DESC])->all();
        }
       else if(!empty($q) AND empty($skills)){
-        $query = Job::find()->where(['AND',['IN', 'location', $dt],['status'=>0]])->all();
-         //print_r($query);exit;
-           $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-            'sort' => [
-                
-            ],
-        ]);
-      }
+        $query = Job::find()->where(['AND',['or like', 'location', $dt],['status'=>0]])->orderBy(['job_id' => SORT_DESC])->all();
+          }
 
       else if(!empty($skills) AND empty($q) )
       {     
-            //$query = Job::find()->innerJoinWith('my_session', 'recruiter_id = my_session.user_id')->all();
         
-$query = new Query;
-$query  ->
-    from('job')
-    ->join('INNER JOIN', 'my_session',
-                'job.recruiter_id =my_session.user_id')
-    ->where('job.status=0')
-    ->all()  ; 
+// $query = new Query;
+// $query  ->
+//     from('job')
+//     ->join('INNER JOIN', 'my_session',
+//                 'job.recruiter_id =my_session.user_id')
+//     ->where('job.status=0')
+//     ->all()  ; 
     
-$command = $query->createCommand();
-$data = $command->queryAll();   
-            $query = $data;
-            $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-            'sort' => [
-                
-            ],
-        ]);
+// $command = $query->createCommand();
+// $data = $command->queryAll();   
+//             $query = $data;
+        $query = Job::find()->orderBy(['job_id' => SORT_DESC])->all();
+           
       }
        else if(empty($skills) AND empty($q) )
       {
-                $query = Job::find()->where(['status'=>0])->all();
-         //print_r($query);exit;
-           $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            // 'pagination' => [
-            //     'pageSize' => 10,
-            // ],
-            'sort' => [
-                
-            ],
-        ]);
-      }
-      //print_r($q);exit;
+                $query = Job::find()->where(['status'=>0])->orderBy(['job_id' => SORT_DESC])->all();
+         }
+       // $query = Job::find()->all();
       return $this->render ('getjob.php', [
             'query' => $query,
+            'status' => $status,
         ]);
     }
 
 
-
- public function actionLogin()
-    {
-         $searchModel = new Candidatesearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = new Candidate();
-        return $this->render('login',[
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-
-    /**
-     * Creates a new Candidate model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Candidate();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->candidate_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
 
     //browse jobs
         public function actionJobs()
@@ -245,12 +172,12 @@ $data = $command->queryAll();
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+    // public function actionDelete($id)
+    // {
+    //     $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+    //     return $this->redirect(['index']);
+    // }
 
     /**
      * Finds the Candidate model based on its primary key value.
@@ -274,57 +201,59 @@ $data = $command->queryAll();
      $path = Yii::getAlias('@webroot').'/uploads/';
      $model  =  $this->findModel($id);
     $file = $path . $model->resume;
-    //print_r($file);exit;
-    if (file_exists($file)) {
+    //
+    if($model->resume)
+     if (file_exists($file)) {
+      //print_r($file);exit;  
+     return Yii::$app->response->sendFile($file);
 
-    Yii::$app->response->sendFile($file);
-
-    }  
+    }
+   // return $this->redirect('index');
   }
 
 
-  public function actionResume($id){
-    $model = $this->findModel($id);
+  // public function actionResume($id){
+  //   $model = $this->findModel($id);
     
-    //return $this->render('resume',['model'=>$model]);
-     if ($model->load(Yii::$app->request->post())  ) {
-        //print_r($model->load(Yii::$app->request->post()));exit;
-             $file = UploadedFile::getInstance($model, 'resume');
-             if($file){  
+  //   //return $this->render('resume',['model'=>$model]);
+  //    if ($model->load(Yii::$app->request->post())  ) {
+  //       //print_r($model->load(Yii::$app->request->post()));exit;
+  //            $file = UploadedFile::getInstance($model, 'resume');
+  //            if($file){  
           
-          $model->resume = $id.'.'.$file->extension; 
-          //print_r($model->resume);exit;         
-          $model->save(false);
-          $file->saveAs('uploads/'.$model->resume);
-         Yii::$app->session->setFlash('success', "Saved");
-         return $this->redirect('index');
-         }
-          else return $this->render('resume',['model'=>$model]);
-        }
-     else  
-        {
-            return $this->render('resume',['model'=>$model]);
-        }
+  //         $model->resume = $id.'.'.$file->extension; 
+  //         //print_r($model->resume);exit;         
+  //         $model->save(false);
+  //         $file->saveAs('uploads/'.$model->resume);
+  //        Yii::$app->session->setFlash('success', "Saved");
+  //        return $this->redirect('index');
+  //        }
+  //         else return $this->render('resume',['model'=>$model]);
+  //       }
+  //    else  
+  //       {
+  //           return $this->render('resume',['model'=>$model]);
+  //       }
 
-    }  
+  //   }  
   
 
-  public function actionUpdateresume($id)
-  {
-     $model = $this->findModel($id);
-     print_r($model->load(Yii::$app->request->post()));exit;
-    if ($model->load(Yii::$app->request->post())  ) {
-             $file = UploadedFile::getInstance($model, 'resume');
-             if($file){  
+  // public function actionUpdateresume($id)
+  // {
+  //    $model = $this->findModel($id);
+  //    print_r($model->load(Yii::$app->request->post()));exit;
+  //   if ($model->load(Yii::$app->request->post())  ) {
+  //            $file = UploadedFile::getInstance($model, 'resume');
+  //            if($file){  
           
-          $model->resume = $id.'.'.$file->extension;          
-          $model->save();
-          $file->saveAs('uploads/'.$model->resume);
-          return $this->redner('view',['id' => $model->candidate_id]);
-         }
-        }
-     else  return $this->redner('resume');
-  }
+  //         $model->resume = $id.'.'.$file->extension;          
+  //         $model->save();
+  //         $file->saveAs('uploads/'.$model->resume);
+  //         return $this->redner('view',['id' => $model->candidate_id]);
+  //        }
+  //       }
+  //    else  return $this->redner('resume');
+  // }
 
    protected function findjob($id)
     {

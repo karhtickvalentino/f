@@ -17,7 +17,7 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/colors/green.css" id="colors">
+
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -34,7 +34,7 @@ AppAsset::register($this);
     
         <!-- Logo -->
         <div id="logo">
-            <h1><a href="/"><img src="images/logo2.png" alt="Work Scout" /></a></h1>
+            <h1><a href="/"><img src="/images/logo2.png" alt="Work Scout" /></a></h1>
         </div>
 
         <!-- Menu -->
@@ -85,7 +85,26 @@ AppAsset::register($this);
         <ul>
 
             <!-- Slide 1 -->
-            <li data-fstransition="fade" data-transition="fade" data-slotamount="10" data-masterspeed="300">
+  
+
+            <!-- Slide 2 -->
+            <li data-transition="slideup" data-slotamount="10" data-masterspeed="800">
+                <img src="images/banner-02.jpg" alt="">
+
+                <div class="caption title sfb" data-x="center" data-y="195" data-speed="400" data-start="800"  data-easing="easeOutExpo">
+                    <h2>Hire great hourly employees</h2>
+                </div>
+
+                <div class="caption text align-center sfb" data-x="center" data-y="270" data-speed="400" data-start="1200" data-easing="easeOutExpo">
+                    <p>Here and Now is most trusted job board, connecting the world's <br> brightest minds with resume database loaded with talents.</p>
+                </div>
+
+                <div class="caption sfb" data-x="center" data-y="400" data-speed="400" data-start="1600" data-easing="easeOutExpo">
+                    <a href="/user-management/auth/registration?type=emp" class="slider-button">Hire</a>
+                    <a href="/user-management/auth/registration" class="slider-button">Work</a>
+                </div>
+            </li>
+          <li data-fstransition="fade" data-transition="fade" data-slotamount="10" data-masterspeed="300">
 
                 <img src="images/banner-01.jpg" alt="" >
 
@@ -101,25 +120,6 @@ AppAsset::register($this);
                     <a href="/user-management/auth/registration" class="slider-button">Get Started</a>
                 </div>
             </li>
-
-            <!-- Slide 2 -->
-            <li data-transition="slideup" data-slotamount="10" data-masterspeed="800">
-                <img src="images/banner-02.jpg" alt="">
-
-                <div class="caption title sfb" data-x="center" data-y="195" data-speed="400" data-start="800"  data-easing="easeOutExpo">
-                    <h2>Hire great hourly employees</h2>
-                </div>
-
-                <div class="caption text align-center sfb" data-x="center" data-y="270" data-speed="400" data-start="1200" data-easing="easeOutExpo">
-                    <p>Here and Now is most trusted job board, connecting the world's <br> brightest minds with resume database loaded with talents.</p>
-                </div>
-
-                <div class="caption sfb" data-x="center" data-y="400" data-speed="400" data-start="1600" data-easing="easeOutExpo">
-                    <a href="/user-management/auth/registration" class="slider-button">Hire</a>
-                    <a href="/job/index" class="slider-button">Work</a>
-                </div>
-            </li>
-
         </ul>
     </div>
 </div>
@@ -166,16 +166,7 @@ AppAsset::register($this);
             </ul>
         </div>
         
-        <div class="three columns">
-            <h4>Press</h4>
-            <ul class="footer-links">
-                <li><a href="#">In the News</a></li>
-                <li><a href="#">Press Releases</a></li>
-                <li><a href="#">Awards</a></li>
-                <li><a href="#">Testimonials</a></li>
-                <li><a href="#">Timeline</a></li>
-            </ul>
-        </div>      
+           
 
        
 

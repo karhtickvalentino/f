@@ -23,12 +23,18 @@ $rec = Recruiter::find()->where(['=', 'recruiter_id', $model->recruiter_id])->on
 		</div>
 
 		<div class="six columns">
-			<?php 
-				$status = Mysession::find()->where(['user_id'=>$rec->recruiter_id])->one();
-				if($status){
-				$c = user::find()->where(['id' => $rec->recruiter_id])->one();
+			<?php       
+                      $sql = "SELECT * FROM session where ((user_id = :userid) and (last_write ) > (:now - 1800))";
+                      //print_r($sql);exit;
+
+                      $command = Yii::$app->db->createCommand($sql);
+                      $command->bindValue(':userid', $rec->recruiter_id);
+                      $command->bindValue(':now', time());
+                      $res=$command->queryAll();
+				if($res){
+				
 			?>
-			<a href="#" class="button" onclick="chatWith('<?php echo $c->chatname; ?>')"><i class="ln ln-icon-Speach-Bubble"></i> Chat</a>
+			<a href="/message?id=<?php echo $rec->recruiter_id;?>" class="button" "><i class="ln ln-icon-Speach-Bubble"></i> Chat</a>
 			<?php }?>
 		</div>
 
@@ -116,9 +122,9 @@ $rec = Recruiter::find()->where(['=', 'recruiter_id', $model->recruiter_id])->on
 					</li>
 				</ul>
 				<?php 
-					if($status){
+					if($res){
 				?>
-				<a href="#" class="button" onclick="chatWith('<?php echo $rec->name; ?>')"><i class="ln ln-icon-Speach-Bubble"></i> Chat</a>
+				<a href="/message?id=<?php echo $rec->recruiter_id; ?>" class="button" ><i class="ln ln-icon-Speach-Bubble"></i> Chat</a>
 				<?php 
 					}
 					else { 

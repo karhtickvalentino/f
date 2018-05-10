@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		'validateOnBlur'=>false,
 	]); ?>
 
-	<?= $form->field($model, 'email')->textInput(['maxlength' => 255, 'autofocus'=>true]) ?>
+	<?= $form->field($model, 'email')->textInput(['maxlength' => 255, 'autofocus'=>true,'class'=>'input-text']) ?>
 
 	<!-- 	 -->
 
